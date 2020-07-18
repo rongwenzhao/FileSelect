@@ -1,11 +1,17 @@
 package com.nick.libfileselect.ui;
 
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.nick.libfileselect.R;
+import com.nick.libfileselect.helper.FileSelector;
+import com.nick.libfileselect.widget.FileSelectorLayout;
+
+import java.util.ArrayList;
 
 import androidx.fragment.app.Fragment;
 
@@ -25,19 +31,12 @@ public class FilePickerFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    private FileSelectorLayout fileSelectorLayout;
+
     public FilePickerFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment FilePickerFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static FilePickerFragment newInstance(String param1, String param2) {
         FilePickerFragment fragment = new FilePickerFragment();
         Bundle args = new Bundle();
@@ -60,6 +59,21 @@ public class FilePickerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_file_picker, container, false);
+        View root = inflater.inflate(R.layout.fragment_file_picker, container, false);
+        initViewAndData(root);
+        return root;
+    }
+
+    private void initViewAndData(View root) {
+        fileSelectorLayout = root.findViewById(R.id.file_select_layout);
+        FileSelector.with(fileSelectorLayout).listen(new FileSelector.OnFileSelectListener() {
+            @Override
+            public void onSelected(ArrayList<String> list) {
+                Toast.makeText(getContext(), "选中文件个数： size = " + (list == null ? 0 : list.size()), Toast.LENGTH_SHORT).show();
+            }
+        })
+                .setDefaultFile(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS))
+                .setup();
+
     }
 }

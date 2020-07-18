@@ -5,9 +5,9 @@
     android:layout_height="match_parent"
     tools:context=".ui.FilePickerFragment">
 
-    <TextView
+    <com.nick.libfileselect.widget.FileSelectorLayout
+        android:id="@+id/file_select_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="match_parent" />
 
 </FrameLayout>
